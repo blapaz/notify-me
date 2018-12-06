@@ -6,7 +6,8 @@ namespace NotifyMe
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Notification n = new Notification();
+            n.Send();
         }
     }
 }
