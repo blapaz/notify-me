@@ -45,8 +45,8 @@ namespace NotifyMe
             MailMessage mail = new MailMessage()
             {
                 From = new MailAddress(from),
-                Subject = "Test email.",
-                Body = "Test email body"
+                Subject = GetMessageSubject(),
+                Body = GetMessageBody()
             };
 
             mail.To.Add(new MailAddress(to));
@@ -71,6 +71,32 @@ namespace NotifyMe
                 Console.ReadKey();
                 return;
             }
+        }
+
+        string GetMessageSubject()
+        {
+            string msg = "NotifyMe Has Started!";
+            return msg;
+        }
+
+        string GetMessageBody()
+        {
+            string msg = "NotifyMe has started @ ip " + GetPublicIP();
+            return msg;
+        }
+
+        string GetPublicIP()
+        {
+            string url = "http://checkip.dyndns.org";
+            WebRequest req = WebRequest.Create(url);
+            WebResponse resp = req.GetResponse();
+            StreamReader sr = new StreamReader(resp.GetResponseStream());
+            string response = sr.ReadToEnd().Trim();
+            string[] a = response.Split(':');
+            string a2 = a[1].Substring(1);
+            string[] a3 = a2.Split('<');
+            string a4 = a3[0];
+            return a4;
         }
     }
 }
