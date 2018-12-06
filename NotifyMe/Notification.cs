@@ -12,9 +12,14 @@ namespace NotifyMe
         public string to;
         public string from;
         public string password;
+        public string subject;
+        public string message;
 
         public Notification()
         {
+            subject = GetMessageSubject();
+            message = GetMessageBody();
+
             string cfgFile = Path.Combine(Directory.GetCurrentDirectory(), "notify.cfg");
             string[] lines = File.ReadAllLines(cfgFile);
 
@@ -32,6 +37,12 @@ namespace NotifyMe
                         break;
                     case "password": password = val;
                         break;
+                    case "subject":
+                        subject = val;
+                        break;
+                    case "message":
+                        message = val;
+                        break;
                     default:
                         break;
                 }
@@ -45,8 +56,8 @@ namespace NotifyMe
             MailMessage mail = new MailMessage()
             {
                 From = new MailAddress(from),
-                Subject = GetMessageSubject(),
-                Body = GetMessageBody()
+                Subject = subject,
+                Body = message
             };
 
             mail.To.Add(new MailAddress(to));
