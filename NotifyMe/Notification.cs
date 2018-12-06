@@ -9,58 +9,65 @@ namespace NotifyMe
 {
     class Notification
     {
-        public string to;
-        public string from;
-        public string password;
-        public string subject;
-        public string message;
+        public string To { get; set; }
+        public string From { get; set; }
+        public string Password { get; set; }
+        public string Subject { get; set; }
+        public string Message { get; set; }
 
         public Notification()
         {
-            subject = GetMessageSubject();
-            message = GetMessageBody();
+            Subject = GetMessageSubject();
+            Message = GetMessageBody();
 
             string cfgFile = Path.Combine(Directory.GetCurrentDirectory(), "notify.cfg");
-            string[] lines = File.ReadAllLines(cfgFile);
 
-            foreach (string line in lines)
+            if (File.Exists(cfgFile))
             {
-                string[] spl = line.Split("=");
-                string key = spl[0].ToLower().Trim();
-                string val = spl[1].Trim();
+                string[] lines = File.ReadAllLines(cfgFile);
 
-                switch (key)
+                foreach (string line in lines)
                 {
-                    case "to": to = val;
-                        break;
-                    case "from": from = val;
-                        break;
-                    case "password": password = val;
-                        break;
-                    case "subject":
-                        subject = val;
-                        break;
-                    case "message":
-                        message = val;
-                        break;
-                    default:
-                        break;
+                    string[] spl = line.Split("=");
+                    string key = spl[0].ToLower().Trim();
+                    string val = spl[1].Trim();
+
+                    switch (key)
+                    {
+                        case "to":
+                            To = val;
+                            break;
+                        case "from":
+                            From = val;
+                            break;
+                        case "password":
+                            Password = val;
+                            break;
+                        case "subject":
+                            Subject = val;
+                            break;
+                        case "message":
+                            Message = val;
+                            break;
+                        default:
+                            break;
+                    }
                 }
             }
         }
 
         public void Send()
         {
-            NetworkCredential credentials = new NetworkCredential(from, password);
+            NetworkCredential credentials = new NetworkCredential(From, Password);
 
             MailMessage mail = new MailMessage()
             {
-                From = new MailAddress(from),
-                Subject = subject,
-                Body = message
+                From = new MailAddress(From),
+                Subject = Subject,
+                Body = Message
             };
 
-            mail.To.Add(new MailAddress(to));
+            mail.To.Add(new MailAddress(To));
 
             SmtpClient client = new SmtpClient()
             {
