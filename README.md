@@ -16,6 +16,8 @@ Setup
    - `to=myemail@gmail.com` 
    - `from=myemail@gmail.com` 
    - `password=myemailpassword`
+   - `subject=NotifyMe Has Started!` *optional*
+   - `message=NotifyMe has started!` *optional*
 
 5) *NotifyMe.exe* can be run to send notification based on info in *notifyme.cfg*
   
@@ -34,3 +36,8 @@ This will setup the app to as service
 7) Open cmd at C:\NotifyMe and run `nssm install NotifyMe "C:\NotifyMe\NotifyMe.exe"`
 
    - Process can be stopped with command `nssm remove <servicename>`
+ 
+Enable Non Google Apps 
+---
+If there is an *non secure error* on execute, try enabling non google apps:
+[`Enable Non Google Apps`](https://myaccount.google.com/lesssecureapps "Google Account")
